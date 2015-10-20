@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
+if [[ $# -ne 1 ]]; then
+	echo "Usage: `basename $0` <file to encrypt and send via email>"
+	exit 1
+fi
+
+f=`basename $1`
+
+gpg --batch --yes --passphrase <passphrase> -o /tmp/${f}.gpg -c $1 || return 1
+
+/usr/bin/sendEmail -f from -t "<to1>;<to2>" -u "<subject>" -m "<message>" -a /tmp/${f}.gpg -s smtp.gmail.com -o tls=yes -xu <from> -xp <password> || return 1
+

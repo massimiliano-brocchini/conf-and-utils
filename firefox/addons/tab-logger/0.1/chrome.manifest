@@ -1,0 +1,2 @@
+content	tablogger	chrome/content/
+overlay	chrome://browser/content/browser.xul	chrome://tablogger/content/overlay.xul

@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+sep=$1
+string=$2
+value=""
+
+for i in {1..${#string}}; do
+	x=$string[i]
+	if [[ "$x" == "$sep" ]]; then 
+		echo $value
+		value=""
+	else
+		value+=$x
+	fi
+done
+echo $value

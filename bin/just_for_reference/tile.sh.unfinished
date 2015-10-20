@@ -1,0 +1,56 @@
+#!/bin/zsh
+
+#array dimensioni in pixel dei monitor
+monitor_X=(1600 1280)
+monitor_Y=(1200 1024)
+
+set -u
+
+#finestra attiva (serve per individuare il desktop e il monitor con il focus)
+WIN_ID=$( xprop -root | /bin/grep "_NET_ACTIVE_WINDOW(WINDOW)" | /bin/egrep -o "[0-9]x.*" )
+
+#monitor con focus
+MONITOR=$( xprop -id $WIN_ID __E_WINDOW_ZONE )
+
+#desktop con focus
+DESK=$( xprop -id $WIN_ID __E_WINDOW_DESK )
+
+FILE=$( /home/$(whoami)/.max_wm/tiling_${DESK}_${MONITOR} )
+
+#controlla esistenza file tile per il desktop visibile: se esiste significa che le finestre sono gia' tiled e devono tornare normali
+if [ -e "$FILE" ]; then
+
+	cat $FILE | while read size; do 
+		eval  "/usr/bin/wmctrl -i -r $size"
+	done
+
+else
+
+	ID_LIST=()
+	X_LIST=()
+	Y_LIST=()
+	WIDTH_LIST=()
+	HEIGHT_LIST=()
+
+	#scorre la lista id finestre e seleziona le finestre che sono visibili salvandone i dati nei vari array
+	
+	$(wmctrl -lG) | while read _ID _INUTILE _X _Y _W _H _RESTO; do
+		#filter e' la stringa vuota se la finestra si trova sul desktop col focus
+		filter=$( xprop -id $line __E_WINDOW_ZONE __E_WINDOW_DESK | grep -v "${MONITOR}" | grep -v ${DESK} )
+		if [[ -z "$filter" ]]; then
+			#memorizza informazioni sulla finestra
+			ID_LIST+=($_ID)
+			X_LIST+=($_X)
+			Y_LIST+=($_Y)
+			WIDTH_LIST+=($_W)
+			HEIGHT_LIST+=($_H)
+			#salva posizione e dimensioni prima del tiling poi le ridimensiona
+			echo $_ID -e 0,$_X,$_Y,$_W,$_H >> $FILE
+		fi
+	done
+
+	#totale finestre da ridimensionare (serve per dividere lo spazio)
+	TOT=
+
+fi
+set +u

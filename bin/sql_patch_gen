@@ -1,0 +1,201 @@
+#!/usr/bin/env php
+<?php // -*- mode: php -*-
+// creates SQL statements to align source schema to target one
+
+
+function get_schema($x) {
+	global $dbms, $db;
+
+	if (is_file($x)) return file($x);
+	else {
+		try {
+			$db = new PDO($x);
+		} catch (PDOException $e) {
+			echo 'Connection failed: ' . $e->getMessage();
+			exit;
+		}
+
+		$dbms=strtolower(strstr($x,':',TRUE));
+
+		switch ($dbms) {
+			case 'sqlite':
+				$q=query("select sql||';' as sql from sqlite_master where type in ('table','view')");
+				while($lines=fetch($q)) {
+					$line=explode("\n",$lines['sql']);
+					foreach ($line as $l) $schema[]=$l;
+				}
+				break;
+		}
+		return $schema;
+	}
+}
+
+
+function snap($s,$d,$offset=0) {
+	$i=strpos($s,$d,$offset);
+	if ($i===false) return array($s,'');
+	return array(substr($s,0,$i),substr($s,$i+strlen($d)));
+}
+
+function query($sql,$args=null) {
+	global $db,$db_path;
+	if (!is_null($args) && !is_array($args)) $args=array($args);
+	if (!$statement=$db->prepare($sql)) die("\nERRORE1 :".print_r($db->errorInfo(),true)."\n".$sql.' '.print_r($args,true));
+	if (is_null($args)) {
+		if (!$statement->execute()) $error=true;
+	} else {
+		if (!$statement->execute($args)) $error=true;
+	}
+
+	if ($error) {
+		$d=dirname($db_path);
+		if (!is_writable($d)) die ("\nERRORE: $d deve essere scrivibile"); 
+		
+		die("\nERRORE3 :".print_r($db->errorInfo(),true)."\n".$sql.' '.print_r($args,true));
+	}
+	return $statement;
+}
+
+function fetch($statement) {
+	return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
+function definition(&$lines,$i,$max,&$res,$is_view=false) {
+		while ($i < $max) {
+			if ($is_view) $res[]=trim($lines[$i]);
+			else {
+				$t=array_merge(array_filter(array_map('trim',explode(',',$lines[$i])))); // just in case there are multiple columns in the same line of the schema
+				$m=count($t);
+				for ($j=0;$j<$m;$j++) {
+					if (substr($t[$j],0,6)=='unique' && $m > 1) {
+						$res[]=$t[$j];
+						$last=count($res)-1;
+						while(substr($t[$j],-1)!=')') {
+							$j++;
+							$res[$last].=','.$t[$j];
+						}
+					} else {
+						$line=trim($t[$j],"); \t\n\r\0\x0B");
+						if (substr_count($line,'(')>substr_count($line,')')) $line.=')'; //trim of ) may remove closing parenthesis on foreign keys or indexes declarations
+						$res[]=$line;
+					}
+				}
+			}
+			if (strpos($lines[$i], ';')!==false) break;
+			$i++;
+		}
+		$res=array_merge(array_filter($res));
+		return $i;
+}
+
+function schema_to_arrays($lines) {
+	$i=0;
+	$max=count($lines);
+	while ($i < $max) {
+		if (preg_match('#create[[:space:]]+table[[:space:]]+([a-z0-9_]+)[[:space:]]+\(#',$lines[$i],$matches))
+			$i=definition($lines,$i+1,$max,$tabl[$matches[1]]);
+		if (preg_match('#create[[:space:]]+view[[:space:]]+([a-z0-9_]+)[[:space:]]+as#',$lines[$i],$matches))
+			$i=definition($lines,$i+1,$max,$view[$matches[1]],true);
+		$i++;
+		continue;
+	}
+	return array($tabl,$view,$indx);
+}
+
+// ---------- MAIN CODE ---------- 
+
+if (count($argv)<3) {
+	echo "Description: create SQL statements to change from source schema definition to target one\n";
+	echo "Usage: ".$_SERVER['script_name']." <source> <target> <dbms type>\n";
+	echo "        <source> and/or <target> can be either files containing SQL schema definition or database connection strings as accepted by PHP PDO\n";
+	echo "        <dbms type> is mandatory if using any schema file\n";
+	exit;
+}
+
+
+$dbms=$argv[3];
+list($src_tabl, $src_view, $src_indx)=schema_to_arrays(array_map('strtolower',get_schema($argv[1])));
+list($tgt_tabl, $tgt_view, $tgt_indx)=schema_to_arrays(array_map('strtolower',get_schema($argv[2])));
+
+
+if ($dbms!='sqlite') die("*** DBMS $dbms not implemented");
+
+// {{{ tables
+foreach ($src_tabl as $k => $s) {
+
+	$src_column=array();
+	$tgt_column=array();
+	$src_def=array();
+	$tgt_def=array();
+	$p=array();
+
+	if(!isset($tgt_tabl[$k])) { // table no more present in target schema
+		$patches[]="DROP TABLE $k;\n";
+	} else {
+		$t=$tgt_tabl[$k];
+
+		foreach($s as $x) list($src_column[],$src_def[])=snap($x,' ');
+		foreach($t as $x) list($tgt_column[],$tgt_def[])=snap($x,' ');
+		$src_columns=array_combine($src_column, $src_def);
+		$tgt_columns=array_combine($tgt_column, $tgt_def);
+
+
+		foreach ($src_columns as $col => $def) {
+			if (!isset($tgt_columns[$col])) { // column no more present in target schema
+				$p[]="ALTER TABLE $k DROP COLUMN $col;\n";
+			} else {
+				if ($def!=$tgt_columns[$col]) { // column definitions are different
+					switch ($dbms) {
+						case 'sqlite':
+							$p=array("DROP TABLE $k;\n",
+									 "CREATE TABLE $k (\n\t".implode("\n\t,",$t)."\n);");
+							if (is_array($patches)) $patches=array_merge($patches,$p);
+							else $patches=$p;
+							continue 3;
+							break;
+					}
+				}
+
+			}
+			unset($tgt_columns[$col]);
+		}
+
+		foreach ($tgt_columns as $col => $def) { // new columns in target schema
+			switch ($dbms) {
+				case 'sqlite':
+					$p[]="ALTER TABLE $k ADD COLUMN $col $def;\n";
+					break;
+			}
+		}
+	}
+	if (is_array($patches)) $patches=array_merge($patches,$p);
+	else $patches=$p;
+}
+
+
+foreach ($tgt_tabl as $k => $t) 
+	if (!isset($src_tabl[$k])) $patches[]="CREATE TABLE $k (\n\t".implode("\n\t,",$t)."\n);";
+// }}}
+
+
+// {{{ views
+foreach ($src_view as $k => $s) {
+	if(!isset($tgt_view[$k])) {
+		$patches[]="DROP VIEW $k;\n";
+	} else {
+		$t=$tgt_view[$k];
+		sort($t);
+		sort($s);
+		if ($t!=$s) {
+			$patches[]="DROP VIEW $k;\n";
+			$patches[]="CREATE VIEW $k AS\n\t".implode("\n\t",$tgt_view[$k])."\n";
+		}
+	}
+}
+
+foreach ($tgt_view as $k => $t) 
+	if (!isset($src_view[$k])) $patches[]="CREATE VIEW $k AS\n\t".implode("\n\t",$t)."\n";
+// }}}
+
+
+foreach ($patches as $p) echo "$p\n\n";

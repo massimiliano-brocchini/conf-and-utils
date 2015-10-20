@@ -1,0 +1,33 @@
+# Remove currently visible line from history file
+
+DELIM='%#_'
+
+LINEA=${PREBUFFER}${BUFFER}
+# escape characters that may be interpreted as part of a regexp by sed
+LINEA=${LINEA//\\ /\\\\\\ }
+LINEA=${LINEA//\^/\\^}
+LINEA=${LINEA//\$/\\$}
+LINEA=${LINEA//\(/\\(}
+LINEA=${LINEA//\)/\\)}
+LINEA=${LINEA//\*/\\*}
+
+for (( i=1; i < 4 ; i++ )); do
+	d=$DELIM[i];
+	if [[ ! "$LINEA" == *$d* ]]; then
+		break;
+	fi
+done
+
+check=$(echo sed -n -r -e "'\\${d}^(: [0-9]+:[0-9]+;)?${LINEA}\$${d}p'" $HISTFILE | zsh 2> /dev/null)
+if [[ $i == 4 || -z "$check" ]]; then
+	echo
+	echo "Sorry you have to delete the entry manually"
+else
+	echo 
+	echo $check
+	if read -q DEL?"Delete above line from history file?"; then
+		echo sed -i -r -e "'\\${d}^(: [0-9]+:[0-9]+;)?${LINEA}\$${d}d'" $HISTFILE | zsh
+	fi
+fi
+zle redisplay
+zle up-history

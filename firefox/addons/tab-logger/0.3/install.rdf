@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>tablogger@massimiliano.brocchini</em:id>
+    <em:version>0.3</em:version>
+    <em:type>2</em:type>
+    <!-- firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{77b9fae0-36c1-11e0-9e42-0800200c9a66}</em:id>
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>3.6.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <!-- toolkit -->
+    <em:targetApplication>
+      <Description>
+        <em:id>toolkit@mozilla.org</em:id>
+        <em:minVersion>1.9</em:minVersion>
+        <em:maxVersion>1.9.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:name>TabLogger</em:name>
+    <em:description>Logs open tabs to a file, switch tab from command line script</em:description>
+    <em:creator>Massimiliano Brocchini</em:creator>
+  </Description>
+</RDF>

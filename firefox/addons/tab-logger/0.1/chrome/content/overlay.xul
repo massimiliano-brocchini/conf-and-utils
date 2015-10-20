@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay id="tablogger-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="text/javascript" src="overlay.js" />
+	
+	<keyset id="mainKeyset">
+		<!-- CTRL + SHIFT + F3 -->
+		<key id="tablogger_save_key" modifiers="accel,shift" keycode="VK_F3" oncommand="tablogger.save()" />
+	</keyset>
+</overlay>

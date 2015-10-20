@@ -1,0 +1,23 @@
+{
+  "name": "tab-selector",
+  "title": "tab-selector",
+  "id": "jid1-ijyKD7ohgDnLBg",
+  "description": "log open tabs to file and allows to change active tab by its number",
+  "author": "Massimiliano Brocchini",
+  "license": "public domain",
+  "version": "0.2.1",
+  "preferences": [{
+        "name": "pref_shortcut",
+        "title": "shortcut",
+        "description": "keyboard shortcut to activate tab selection text input",
+        "type": "string",
+        "value": "accel-shift-x"
+    },
+	{
+        "name": "pref_path",
+        "title": "path",
+        "description": "full path of the directory that will store the file contaning the list of open tabs\nNOTE: must end with directory separator",
+        "type": "string",
+        "value": "/tmp/"
+	}]
+}
