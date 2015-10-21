@@ -1,4 +1,0 @@
-cd directory file aperto -> :cd %:h	
-completamento nome file  -> CTRL+X CTRL+F
-
-scorrere la schermata tenendo la posizione del cursorse inviaria: CTRL+Y (su) e CTRL+E (giu)
