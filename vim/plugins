@@ -1,0 +1,22 @@
+
+-- Debugger PHP/Python --
+
+per correggere errore:
+	python module vim_debug not found...
+installare vim-debug con python-pip
+	sudo pip install dbgp vim-debug
+
+documentazione: https://github.com/jaredly/vim-debug
+
+-- pacchetti archlinux per plugin vim --
+
+vim-cecutil 17-1 (vim-plugins)
+	save/restore window position, mark position, selected user maps
+vim-debug-git 20120110-1
+	This plugin creates an integrated debugging environment in VIM.
+vim-gundo 2.3.0-1 (vim-plugins)
+	Vim plugin to visualize your Vim undo tree
+vim-manpageview 24c-3 (vim-plugins)
+	Viewer for manpages, gnu info, perldoc, and php (unix/linux/cygwin)
+vim-sco 4.02-5 (vim-plugins)
+	Browse source code easily with cscope, ctags and marks system

@@ -1,0 +1,2 @@
+Align.vba: call delete('/home/brocchini/.vim/plugin/AlignPlugin.vim')|call delete('/home/brocchini/.vim/plugin/AlignMapsPlugin.vim')|call delete('/home/brocchini/.vim/plugin/cecutil.vim')|call delete('/home/brocchini/.vim/doc/Align.txt')|call delete('/home/brocchini/.vim/autoload/Align.vim')|call delete('/home/brocchini/.vim/autoload/AlignMaps.vim')
+download_script.php?src_id=16266: call delete('/home/massimiliano/.vim/plugin/histwinPlugin.vim')|call delete('/home/massimiliano/.vim/autoload/histwin.vim')|call delete('/home/massimiliano/.vim/doc/histwin.txt')
