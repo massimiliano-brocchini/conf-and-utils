@@ -12,3 +12,4 @@ user_pref("datareporting.healthreport.uploadEnabled", false); //don't send data 
 user_pref("keyconfig.main.key_quitApplication", "!][]["); //disable CTRL+Q
 user_pref("middlemouse.contentLoadURL", false); //middle mouse button clicked outside a link doesn't try to load clipboard content as URL
 user_pref("signon.rememberSignons", false); //don't remember passwords
+user_pref("xpinstall.signatures.required", false); //don't disable unsigned (old) add-ons
