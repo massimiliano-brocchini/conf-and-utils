@@ -161,7 +161,7 @@ fi
 # }}}
 
 # variables
-test -n "$DISPLAY" && export TERM=xterm-color
+test -n "$DISPLAY" && export TERM=xterm-256color
 export LC_ALL="en_US.UTF-8"
 export LC_PAPER="it_IT" #A4 paper format
 export LESSCHARSET=utf-8 #no more errors in "man"
