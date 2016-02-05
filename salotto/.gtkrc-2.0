@@ -1,0 +1,8 @@
+# -- THEME AUTO-WRITTEN DO NOT EDIT
+include "/usr/share/themes/Clearlooks/gtk-2.0/gtkrc"
+
+include "/home/salotto/.gtkrc.mine"
+
+#gtk-icon-theme-name="Tango"
+
+# -- THEME AUTO-WRITTEN DO NOT EDIT

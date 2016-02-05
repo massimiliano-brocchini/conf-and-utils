@@ -1,0 +1,6 @@
+style "user-font"
+{
+  font_name="Cantarell"
+}
+widget_class "*" style "user-font"
+gtk-font-name="Cantarell 12"
