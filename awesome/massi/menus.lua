@@ -7,7 +7,7 @@ function layouts_menu()
 			end
 		, beautiful['layout_'..l.name]}
 	end
-	lmenu = awful.menu({items = ll, theme = {width = 80}})
+	lmenu = awful.menu({items = ll, theme = {width = 10*theme.fontsize}})
 	lmenu:toggle({keygrabber = true})
 end
 
@@ -73,7 +73,7 @@ function clients_menu()
 		end
 	end
 	if next(clients) ~= nil then 
-		local m = awful.menu({items = clients , theme = {width = 350}})
+		local m = awful.menu({items = clients , theme = {width = 20 * theme.fontsize}})
 		m:toggle({keygrabber = true})
 		return m
 	end
@@ -96,7 +96,7 @@ function terminals_menu()
 		end
 	end
 	if next(terms) == nil then return end
-	local m = awful.menu({items = terms, theme = {width = 500}})
+	local m = awful.menu({items = terms, theme = {width = 65 * theme.fontsize}})
 	m:toggle({keygrabber = true})
 end
 --- }}}

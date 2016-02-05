@@ -13,7 +13,7 @@ theme = {}
 -- {{{ Styles
 theme.font_type = "sans"
 if hostname == "salotto" then
-	theme.fontsize     = 10
+	theme.fontsize     = 14
 else
 	theme.fontsize     = 8
 end
@@ -71,8 +71,8 @@ theme.mouse_finder_color = "#0066B3"
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_height = "15"
-theme.menu_width  = "100"
+theme.menu_height = 2 * theme.fontsize
+theme.menu_width  = 12 * theme.fontsize
 -- }}}
 
 -- {{{ Icons
