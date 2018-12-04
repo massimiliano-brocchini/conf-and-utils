@@ -126,6 +126,8 @@ alias lsnew="ls -tlhr"      # display the newest files
 alias lsold="ls -tlh"    # display the oldest files
 alias lssmall="ls -Slh"    # display the smallest files
 
+alias evince=atril
+
 alias c='clear'
 alias cd..='cd ..'
 alias rm='rm -i'
@@ -151,6 +153,8 @@ alias -g ..3='../../..'
 alias -g ..4='../../../..'
 alias -g ..5='../../../../..'
 
+#aliases works with sudo too (e.g. sudo ll)
+alias sudo='nocorrect sudo '
 
 #redo:
 #use this when sudo is not enough (e.g. cd, piped commands, redirections)
@@ -207,6 +211,10 @@ cd () {
 	else
 		builtin	cd $1
 	fi
+}
+
+random-mpv() {
+	find . -maxdepth 1 -type f | sort -R | head -n $1 | parallel --no-notice --tty -Xj1 mpv --deinterlace --no-resume-playback --playlist-pos=0
 }
 
 # X auto start
