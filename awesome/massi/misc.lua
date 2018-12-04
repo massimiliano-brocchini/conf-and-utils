@@ -31,7 +31,7 @@ end
 function close_everything()
 	local s = mouse.screen
 
-	for _ , pos in pairs(naughty.notifications[s]) do
+	for _ , pos in pairs(naughty.notifications[s.index]) do
 		for _ , notification in pairs(awful.util.table.reverse(pos)) do
 			naughty.destroy(notification)
 		end

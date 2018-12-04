@@ -27,14 +27,6 @@ function _pr_r (t, name, indent)
 end
 
 
-function debug(x,filename)
-	local filename = filename or "awesome_debug"
-	local f = io.open("/tmp/"..filename, "w")
-	f:write(_pr_r(x))
-	f:close()
-end
-
-
 function trim(s)
   return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
 end

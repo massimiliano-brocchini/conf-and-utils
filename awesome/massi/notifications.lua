@@ -23,10 +23,10 @@ end
 
 
 function layout_name_hide()
-	for s = 1, screen.count() do
-		if layout_notification[s] ~= nil then 
-			naughty.destroy(layout_notification[s]) 
-			layout_notification[s]=nil 
+	for s in screen do
+		if layout_notification[s.index] ~= nil then 
+			naughty.destroy(layout_notification[s.index]) 
+			layout_notification[s.index]=nil 
 		end 
 	end
 end

@@ -5,6 +5,7 @@ function center(axis)
 end
 
 -- move all the clients of a tag to anoter tag and/or screen (moves all clients tagged with the first tag of the selected client)
+--TODO: TEST!
 function move_tag_content(s,t,c)
 	local sel = c or client.focus
 	local scr = s or sel.screen 
@@ -25,6 +26,7 @@ function move_tag_content(s,t,c)
 end
 
 -- closes all clients in a tag (see move_tag_content comment for details)
+--TODO: TEST!
 function close_tag_content()
 	local sel = client.focus
 	local current_tag = sel:tags()[1] 
@@ -35,13 +37,14 @@ function close_tag_content()
 end
 
 -- adapted from http://awesome.naquadah.org/wiki/Autostart 
+--TODO: TEST!
 function run_once(prg,arg_string,screen)
     if not prg then
         do return nil end
     end
     if not arg_string then 
-		awful.util.spawn_with_shell("pgrep -u $USER -x " .. prg .. " || (" .. prg .. " &)",screen)
+		awful.spawn.with_shell("pgrep -u $USER -x " .. prg .. " || (" .. prg .. " &)",screen)
 	else
-		awful.util.spawn_with_shell("pgrep -u $USER -x " .. prg .. " || (" .. prg .. " " .. arg_string .. " &)",screen)
+		awful.spawn.with_shell("pgrep -u $USER -x " .. prg .. " || (" .. prg .. " " .. arg_string .. " &)",screen)
 	end
 end
