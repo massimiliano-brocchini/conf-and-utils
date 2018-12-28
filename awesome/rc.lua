@@ -482,25 +482,24 @@ awful.rules.rules = {
         class = {
           "Arandr",
           "Gpick",
-          "Kruler",
-          "MessageWin",  -- kalarm.
-          "Sxiv",
-          "Wpa_gui",
-          "pinentry",
-          "veromix",
           "xtightvncviewer"},
 
         name = {
           "Event Tester",  -- xev.
+		  "Library", --Firefox downloads
+		  "galculator",
         },
         role = {
-          "AlarmWindow",  -- Thunderbird's calendar.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
-      }, properties = { floating = true }},
+      }, properties = { floating = true , titlebars_enabled = true}
+	   , callback = function (c)
+		   awful.placement.centered(c, nil)
+		 end
+  	},
 
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
+    -- Add titlebars to normal dialogs
+    { rule_any = {type = { "dialog" }
       }, properties = { titlebars_enabled = true }
     },
 
