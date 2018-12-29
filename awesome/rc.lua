@@ -42,13 +42,14 @@ end
 require("massi.lang")
 -- JSON = require("massi.JSON")
 conf_dir   = awful.util.getdir("config")
-hostname = ""
-awful.spawn.easy_async("hostname", function(stdout, stderr, reason, exit_code)
-	hostname = trim(stdout)
-end)
+
+-- read hostname (this must be synchronous since we want its value while processing awesome config)
+local pipe_ =io.popen('hostname')
+hostname = trim(pipe_:read())
+pipe_:close()
+
 msg        = ""
 beautiful.init(conf_dir .. "/theme/default/theme.lua")
--- }}}
 require("massi.wm")
 require("massi.notifications")
 require("massi.menu")
@@ -56,7 +57,6 @@ require("massi.menu")
 require("massi.floating")
 -- require("massi.misc")
 -- }}}
-
 
 -- {{{ Variable definitions
 
