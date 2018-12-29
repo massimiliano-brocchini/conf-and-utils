@@ -41,9 +41,11 @@ end
 -- {{{ customizations and extensions by Massi
 require("massi.lang")
 -- JSON = require("massi.JSON")
-conf_dir   = awful.util.getdir('config')
-hostname   = trim(awful.util.pread('hostname'))
-username   = trim(awful.util.pread('whoami'))
+conf_dir   = awful.util.getdir("config")
+hostname = ""
+awful.spawn.easy_async("hostname", function(stdout, stderr, reason, exit_code)
+	hostname = trim(stdout)
+end)
 msg        = ""
 beautiful.init(conf_dir .. "/theme/default/theme.lua")
 -- }}}
