@@ -217,6 +217,10 @@ random-mpv() {
 	find . -maxdepth 1 -type f | sort -R | head -n $1 | parallel --no-notice --tty -Xj1 mpv --deinterlace --no-resume-playback --playlist-pos=0
 }
 
+gitdiff() {
+	vimdiff $1  <(git show HEAD:$1)
+}
+
 # X auto start
 if [[ "$HOST" == "salotto" ]] && [[ -z "$DISPLAY" ]] && [[ $(tty) == /dev/tty1 ]] && [[ "`whoami`" != "root" ]]; then
 	startx
