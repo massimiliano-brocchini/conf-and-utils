@@ -53,7 +53,7 @@ beautiful.init(conf_dir .. "/theme/default/theme.lua")
 require("massi.wm")
 require("massi.notifications")
 require("massi.menu")
--- require("massi.audio")
+require("massi.audio")
 require("massi.floating")
 -- require("massi.misc")
 -- }}}
@@ -200,6 +200,8 @@ else
 	default_layout = awful.layout.layouts[6] --fair horizontal
 end
 
+myvolume = wibox.widget.textbox()
+update_volume_widget("Master", "",false)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -238,9 +240,9 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
+			myvolume,
             s.mylayoutbox,
         },
     }

@@ -64,23 +64,15 @@ function update_volume_widget(channel, card, osd)
 
 	if msg ~= "" then
 		if osd then 
-			awful.util.spawn_with_shell("echo ".. msg .." | osd_cat --color=red --align=center --pos=bottom --delay=1 --age=1 --offset=-95 --font='-*-courier-*-*-*-*-34-*-*-*-*-*-*-*'")
-		else 
 			alert(msg,1,{fg = '#FF0000'})
 		end
 	end
 
 	if string.find(status, "on", 1, true) then
-		if client.focus and (client.focus.class=="MPlayer" or client.focus.class=="Smplayer" or client.focus.class=="mplayer2" or client.focus.class=="Vlc") then
-		else
-			if osd then
-				os.execute("sleep 0.002 ; killall -q osd_cat")
-				os.execute("osd_cat --color=green --align=center --pos=bottom --barmode=percentage --delay=1 --age=1 --offset=25 --lines=1 --font='-*-courier-*-*-*-*-34-*-*-*-*-*-*-*' -P " .. volume .. " &")
-			else
-				vol_alert = vol_alert or {}
-				vol_alert.id = vol_alert.id or 0
-				vol_alert = alert(volume,1,{fg = '#00FF00' , replaces_id = vol_alert.id , font = theme.font_type.." "..theme.fontsize+4})
-			end
+		if osd then
+			vol_alert = vol_alert or {}
+			vol_alert.id = vol_alert.id or 0
+			vol_alert = alert(volume,1,{fg = '#00FF00' , replaces_id = vol_alert.id , font = beautiful.font_type.." "..beautiful.fontsize+4})
 		end
 		volume = " v." .. volume .. loud .. "% "
 	else -- MUTE
