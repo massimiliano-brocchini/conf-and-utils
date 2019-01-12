@@ -355,7 +355,15 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+	-- Multimedia keys
+	awful.key({ }       , "XF86AudioRaiseVolume" , function() volume('1+')  end),
+	awful.key({ }       , "XF86AudioLowerVolume" , function() volume('1-')  end),
+	awful.key({ }       , "XF86AudioMute"        , function() mute_toggle() end),
+	awful.key({modkey } , "F12"                  , function() volume('2+')  end),
+	awful.key({modkey } , "F11"                  , function() volume('2-')  end),
+	awful.key({modkey } , "F10"                  , function() mute_toggle() end)
 )
 
 clientkeys = gears.table.join(
