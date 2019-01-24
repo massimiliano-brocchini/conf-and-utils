@@ -45,7 +45,7 @@ end
 
 
 function update_volume_widget(channel, card, osd)
-	local osd    = osd or false
+	local osd    = osd or true
 	local info   = get_channel_info(channel, card)
 	local volume = string.match(info, "(%d?%d?%d)%%")
 	if not volume then return end
