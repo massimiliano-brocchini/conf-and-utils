@@ -73,7 +73,7 @@ function clients_menu()
 		end
 	end
 	if next(clients) ~= nil then 
-		local m = awful.menu({items = clients , theme = {width = 40 * beautiful.fontsize}})
+		local m = awful.menu({items = clients , theme = {width = 65 * beautiful.fontsize}})
 		m:toggle({keygrabber = true})
 		return m
 	end
