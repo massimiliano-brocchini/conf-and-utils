@@ -3,7 +3,7 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
 xsel -o -b | xsel -i -b
-
+sleep 0.3
 if [[ -n "$1" ]]; then
 	xdotool key --window $1 --delay 2 ctrl+v
 else
