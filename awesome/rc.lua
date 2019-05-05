@@ -41,10 +41,10 @@ end
 -- {{{ customizations and extensions by Massi
 require("massi.lang")
 -- JSON = require("massi.JSON")
-conf_dir   = awful.util.getdir("config")
+conf_dir = awful.util.getdir("config")
 
 -- read hostname (this must be synchronous since we want its value while processing awesome config)
-local pipe_ =io.popen('hostname')
+local pipe_ = io.popen('hostname')
 hostname = trim(pipe_:read())
 pipe_:close()
 
@@ -55,7 +55,7 @@ require("massi.notifications")
 require("massi.menu")
 require("massi.audio")
 require("massi.floating")
--- require("massi.misc")
+require("massi.misc")
 -- }}}
 
 -- {{{ Variable definitions
@@ -327,6 +327,14 @@ globalkeys = gears.table.join(
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
+
+    -- {{{ Massi
+    awful.key({ "Shift"           }, "Escape",    close_everything  			), -- closes all open notifications and menus
+    awful.key({ "Mod1"            }, "F1",        terminals_menu  				), -- opens terminal windows client menu
+    awful.key({ "Mod1"            }, "F5",        tags_per_layout				), -- shows a menu of the layouts used
+    awful.key({ modkey			  }, "v",         paste_senza_formattazione  	), -- paste pure text without any formatting
+    awful.key({ "Mod1"            }, "F3",        function () cmenu = clients_menu()  	end), -- open clients menu
+	-- }}}
 
     awful.key({ modkey, "Control" }, "n",
               function ()
