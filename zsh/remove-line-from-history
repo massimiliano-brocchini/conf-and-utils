@@ -1,32 +1,19 @@
 # Remove currently visible line from history file
+# save this script under zsh/functions/Zle directory (e.g. /usr/share/zsh/functions/Zle/ in Archlinux)
 
-DELIM='%#_'
 
 LINEA=${PREBUFFER}${BUFFER}
-# escape characters that may be interpreted as part of a regexp by sed
-LINEA=${LINEA//\\ /\\\\\\ }
-LINEA=${LINEA//\^/\\^}
-LINEA=${LINEA//\$/\\$}
-LINEA=${LINEA//\(/\\(}
-LINEA=${LINEA//\)/\\)}
-LINEA=${LINEA//\*/\\*}
+printf -v escaped '/^(: [0-9]+:[0-9]+;)?%s$/' "$(sed 's:[]\[^$.*/]:\\&:g' <<<"$LINEA")"
 
-for (( i=1; i < 4 ; i++ )); do
-	d=$DELIM[i];
-	if [[ ! "$LINEA" == *$d* ]]; then
-		break;
-	fi
-done
-
-check=$(echo sed -n -r -e "'\\${d}^(: [0-9]+:[0-9]+;)?${LINEA}\$${d}p'" $HISTFILE | zsh 2> /dev/null)
-if [[ $i == 4 || -z "$check" ]]; then
+check=$(echo sed -n -r -e "'${escaped}p'" $HISTFILE | zsh 2> /dev/null)
+if [[ -z "$check" ]]; then
 	echo
 	echo "Sorry you have to delete the entry manually"
 else
 	echo 
 	echo $check
 	if read -q DEL?"Delete above line from history file?"; then
-		echo sed -i -r -e "'\\${d}^(: [0-9]+:[0-9]+;)?${LINEA}\$${d}d'" $HISTFILE | zsh
+		echo sed -i -r -e "'${escaped}d'"  $HISTFILE | zsh
 	fi
 fi
 zle redisplay
