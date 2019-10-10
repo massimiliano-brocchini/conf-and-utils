@@ -4,7 +4,7 @@
 
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
+dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
@@ -12,11 +12,11 @@ local themes_path = gfs.get_themes_dir()
 local theme = {}
 
 theme.font_type = "sans"
-if hostname == "salotto" then
-	theme.fontsize     = 14
-else
-	theme.fontsize     = 8
-end
+-- if hostname == "salotto" then
+-- 	theme.fontsize     = 14
+-- else
+	theme.fontsize     = 10
+-- end
 
 theme.font = theme.font_type.." "..theme.fontsize
 

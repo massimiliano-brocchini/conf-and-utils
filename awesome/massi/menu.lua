@@ -7,7 +7,7 @@ function layouts_menu()
 			end
 		, beautiful['layout_'..l.name]}
 	end
-	lmenu = awful.menu({items = ll, theme = {width = 10*beautiful.fontsize}})
+	lmenu = awful.menu({items = ll, theme = {width = dpi(10 * beautiful.fontsize)}})
 	lmenu:toggle({keygrabber = true})
 end
 
@@ -43,7 +43,7 @@ function tags_per_layout()
 		end
 
 	end
-	local tmenu = awful.menu({items = ll, theme = {width = max_len * beautiful.fontsize}})
+	local tmenu = awful.menu({items = ll, theme = {width = dpi(max_len * beautiful.fontsize)}})
 	tmenu:toggle({keygrabber = true})
 end
 
@@ -73,7 +73,7 @@ function clients_menu()
 		end
 	end
 	if next(clients) ~= nil then 
-		local m = awful.menu({items = clients , theme = {width = 65 * beautiful.fontsize}})
+		local m = awful.menu({items = clients , theme = {width = dpi(65 * beautiful.fontsize)}})
 		m:toggle({keygrabber = true})
 		return m
 	end
@@ -96,7 +96,7 @@ function terminals_menu()
 		end
 	end
 	if next(terms) == nil then return end
-	local m = awful.menu({items = terms, theme = {width = 65 * beautiful.fontsize}})
+	local m = awful.menu({items = terms, theme = {width = dpi(65 * beautiful.fontsize)}})
 	m:toggle({keygrabber = true})
 end
 --- }}}

@@ -94,7 +94,7 @@ local function client_menu_toggle_fn()
             instance:hide()
             instance = nil
         else
-            instance = awful.menu.clients({ theme = { width = 250 * beautiful.fontsize / 8 } })
+            instance = awful.menu.clients({ theme = { width = dpi(250)} })
         end
     end
 end
@@ -123,7 +123,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 									{ "&leafpad", "leafpad" , icons.leafpad },
 									{ "&pcmanfm", "pcmanfm" , icons.pcmanfm },
 									{ "&galculator", "galculator" , icons.galculator },
-								  } , theme = { width = 80 * beautiful.fontsize / 8 }
+									  } , theme = { width = dpi(90)}
 						})
 
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
