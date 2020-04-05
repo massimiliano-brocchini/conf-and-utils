@@ -215,7 +215,9 @@ cd () {
 
 random-mpv() {
 	d=${2:-.}
-	find $d -maxdepth 1 -type f | sort -R | head -n $1 | parallel --no-notice --tty -Xj1 mpv --deinterlace --no-resume-playback --playlist-pos=0
+	video=$(find $d -maxdepth 1 -type f | sort -R | head -n $1)
+	echo "$video"
+	echo "$video" | parallel --no-notice --tty -Xj1 mpv --deinterlace --no-resume-playback
 }
 
 gitdiff() {
