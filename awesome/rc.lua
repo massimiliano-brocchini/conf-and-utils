@@ -199,13 +199,17 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 if hostname == "salotto" then
-	default_layout = awful.layout.layouts[7] --max
+        default_layout = awful.layout.layouts[7] --max
+        audio_channel = "PCM"
+        audio_card = "-c 0"
 else
-	default_layout = awful.layout.layouts[6] --fair horizontal
+        default_layout = awful.layout.layouts[6] --fair horizontal
+        audio_channel = "Master"
+        audio_card = ""
 end
 
 myvolume = wibox.widget.textbox()
-update_volume_widget("Master", "",false)
+update_volume_widget(audio_channel, audio_card,false)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -374,11 +378,11 @@ globalkeys = gears.table.join(
               {description = "show the menubar", group = "launcher"}),
 
 	-- Multimedia keys
-	awful.key({ }       , "XF86AudioRaiseVolume" , function() volume('1+')  end),
-	awful.key({ }       , "XF86AudioLowerVolume" , function() volume('1-')  end),
-	awful.key({ }       , "XF86AudioMute"        , function() mute_toggle() end),
-	awful.key({modkey } , "F12"                  , function() volume('2+')  end),
-	awful.key({modkey } , "F11"                  , function() volume('2-')  end),
+	awful.key({ }       , "XF86AudioRaiseVolume" , function() volume('1+', audio_channel, audio_card) end),
+	awful.key({ }       , "XF86AudioLowerVolume" , function() volume('1-', audio_channel, audio_card) end),
+	awful.key({ }       , "XF86AudioMute"        , function() mute_toggle( audio_channel, audio_card) end),
+	awful.key({modkey } , "F12"                  , function() volume('2+', audio_channel, audio_card) end),
+	awful.key({modkey } , "F11"                  , function() volume('2-', audio_channel, audio_card) end),
 	awful.key({modkey } , "F10"                  , function() mute_toggle() end)
 )
 
