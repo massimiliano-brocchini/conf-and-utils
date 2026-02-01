@@ -504,6 +504,7 @@ awful.rules.rules = {
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
      }
     },
+	{ rule = { class = "mpv" } , properties = { border_width = 0, x=0, y=0} },
 
     -- Floating clients.
     { rule_any = {
