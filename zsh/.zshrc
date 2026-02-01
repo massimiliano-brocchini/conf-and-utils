@@ -137,6 +137,7 @@ alias psaux='ps auxww | grep -v grep | grep -i --color'
 alias clean='find ./ -type f -iname "*~" -delete'
 alias less='less -i' #less with smartcase search
 alias d='dirs -v'
+alias screenshot='import png:- | xclip -selection clipboard -t image/png'
 
 alias halt='poweroff'
 alias lua='rlwrap lua'
