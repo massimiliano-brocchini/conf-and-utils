@@ -1,12 +1,13 @@
 #!/bin/zsh
 
-f=$1
-m=$(mediainfo --Output="Video;%CodecID%" "$f")
+src=$1
+dst="${src%%.*}.avi"
+m=$(mediainfo --Output="Video;%CodecID%" "$src")
 
 if [[  "$m" == "MJPG" || "$m" == "avc1" ]]; then
-	d=$(stat -c %y $f)
+	d=$(stat -c %y $src)
 
-	mv "$f" "$f.orig"
-	ffmpeg -threads "$(cat /proc/cpuinfo | grep "^processor" | wc -l)" -i "$f.orig" -vcodec libx264 "${f%%.*}.avi"
-	touch --date="$d" "$f"
+	mv "$src" "$src.orig"
+	ffmpeg -threads "$(cat /proc/cpuinfo | grep "^processor" | wc -l)" -i "$src.orig" -vcodec libx264 "$dst"
+	touch --date="$d" "$dst"
 fi
