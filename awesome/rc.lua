@@ -43,6 +43,8 @@ require("massi.lang")
 -- JSON = require("massi.JSON")
 conf_dir = awful.util.getdir("config")
 
+local revelation = require("massi.revelation")
+
 -- read hostname (this must be synchronous since we want its value while processing awesome config)
 local pipe_ = io.popen('hostname')
 hostname = trim(pipe_:read())
@@ -50,12 +52,14 @@ pipe_:close()
 
 msg        = ""
 beautiful.init(conf_dir .. "/theme/default/theme.lua")
+revelation.init()
 require("massi.wm")
 require("massi.notifications")
 require("massi.menu")
 require("massi.audio")
 require("massi.floating")
 require("massi.misc")
+local switcher = require("massi.switcher")
 -- }}}
 
 -- {{{ Variable definitions
@@ -333,6 +337,10 @@ globalkeys = gears.table.join(
     awful.key({ "Mod1"            }, "F1",        terminals_menu  				), -- opens terminal windows client menu
     awful.key({ "Mod1"            }, "F5",        tags_per_layout				), -- shows a menu of the layouts used
     awful.key({ modkey			  }, "v",         paste_senza_formattazione  	), -- paste pure text without any formatting
+	awful.key({ modkey			  }, "e",		  revelation					), -- expose like functionality
+    awful.key({ "Mod1"            }, "Tab",       function () switcher.switch(1 , "Mod1", "Alt_L", "Shift", "Tab") end), -- Alt-Tab windows selector
+    awful.key({ "Mod1", "Shift"   }, "Tab",       function () switcher.switch(-1, "Mod1", "Alt_L", "Shift", "Tab") end), -- Alt-Tab windows selector reverse order
+
     awful.key({ "Mod1"            }, "F3",        function () cmenu = clients_menu()  	end), -- open clients menu
 	-- }}}
 
