@@ -601,4 +601,15 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+client.connect_signal("property::fullscreen", function(c)
+	if c.fullscreen then
+		-- Disable screen blanking and DPMS when a window is fullscreen
+		awful.spawn.with_shell("xset s off -dpms")
+	else
+		-- Re-enable your default timeouts (e.g., 600 seconds / 10 minutes)
+		awful.spawn.with_shell("xset s on +dpms; xset dpms 600 600 600")
+	end
+end)
+
 -- }}}
